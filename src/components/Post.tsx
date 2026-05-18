@@ -1,15 +1,18 @@
-type PostProps = {
+import classes from "./Post.module.css"
+
+export type PostStructure = {
+  id: string,
   author: string;
   body: string;
 };
 
-export default function Post({ author, body }: PostProps) {
+export default function Post({ author, body }: PostStructure) {
   return (
-    <div className="w-60 mb-10 p-4 rounded-xl border-t-4 border-(--accent-border) bg-(--bg) shadow-(--shadow) hover:border-t-6">
-      <p className="text-2xl font-bold mb-2 text-(--accent)">
+    <div className={classes.post}>
+      <p className={classes.author}>
         {author}
       </p>
-      <p className="text-base font-mono text-(--text) leading-relaxed">
+      <p className={classes.text}>
         {body}
       </p>
     </div>

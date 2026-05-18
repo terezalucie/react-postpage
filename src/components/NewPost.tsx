@@ -1,48 +1,74 @@
+import { useState } from "react"
+import classes from "./NewPost.module.css"
+import type { PostStructure } from "./Post"
+
+
 type NewPostProps = {
-  onPostChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void,
-  onAuthorChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
+  onClose: () => void,
+  onAddPost: (post: PostStructure) => void,
 }
 
-export default function NewPost({onPostChange, onAuthorChange}: NewPostProps) {
+export default function NewPost({ onClose, onAddPost } : NewPostProps) {
+    const [post, setPost] = useState<PostStructure>({
+      id: "",
+      body: "",
+      author: "",
+    }) 
 
+    const handlePostChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+      setPost((prev) => ({
+          ...prev,
+          [e.target.name]: e.target.value
+      }))
+    }
 
+    const handleSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault()
+      const postData: PostStructure = {
+        id: post.id + 1,
+        body: post.body,
+        author: post.author,
+      }
+      onAddPost(postData)
+      onClose()
+
+    }
+      
+  
   return (
-    <form className="max-w-lg w-full mx-auto mt-10 p-6 rounded-xl border border-(--border) bg-(--bg) shadow-(--shadow)">
+    <form className={classes.form} onSubmit={handleSubmitForm}>
 
       <p className="flex flex-col gap-2 mb-6">
-        <label className="font-mono text-lg text-(--text-h)" htmlFor="body">
+        <label className={classes.label} htmlFor="body">
           Text
         </label>
 
         <textarea
-          onChange={onPostChange}
-          className="w-full min-h-30 rounded-md p-3 text-(--text) bg-(--social-bg) border border-(--border) focus:outline-none focus:ring-2 focus:ring-(--accent)"
+          onChange={handlePostChange}
+          className={classes.textarea}
           name="body"
           id="body"
           required
-          rows={4}
+          rows={3}
         />
       </p>
       <p className="flex flex-col gap-2 mb-6">
-        <label className="font-mono text-lg text-(--text-h)" htmlFor="name">
+        <label className={classes.label} htmlFor="author">
           Your name
         </label>
 
         <input
-          onChange={onAuthorChange}
-          className="w-full rounded-md p-3 text-(--text) bg-(--social-bg) border border-(--border) focus:outline-none focus:ring-2 focus:ring-(--accent)"
-          name="name"
-          id="name"
+          onChange={handlePostChange}
+          className={classes.input}
+          name="author"
+          id="author"
           required
         />
       </p>
-
-      <button
-        type="submit"
-        className="w-full py-3 rounded-md bg-(--accent) text-white font-semibold hover:opacity-90 transition"
-      >
-        Create Post
-      </button>
+      <p className={classes.actions}>
+        <button type="button" onClick={onClose}>Cancel</button>
+        <button>Submit</button>
+      </p>
     </form>
   );
 }

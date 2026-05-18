@@ -1,14 +1,20 @@
-import './App.css'
+import { useState } from 'react'
+import MainHeader from './components/MainHeader'
 import PostsList from './components/PostsList'
 
 function App() {
+    const [modalIsVisible, setModalIsVisible] = useState(true)
+    const handleShowModal = () =>setModalIsVisible(true)
+    const handleHideModal = () =>setModalIsVisible(false)
 
   return (
-    <main 
-      className='w-screen h-scree mt-30'
-    >
-      <PostsList />
-    </main>
+    <>    
+      <MainHeader onCreatePost={handleShowModal} />
+      <main>
+        <PostsList isPosting={modalIsVisible} onClose={handleHideModal} />
+      </main>
+    </>
+
   )
 }
 
