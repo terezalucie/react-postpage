@@ -22,10 +22,10 @@ export default function NewPost({ onClose, onAddPost } : NewPostProps) {
       }))
     }
 
-    const handleSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmitForm = (e: React.SubmitEvent<HTMLFormElement>) => {
       e.preventDefault()
       const postData: PostStructure = {
-        id: post.id + 1,
+        id: post.id,
         body: post.body,
         author: post.author,
       }
